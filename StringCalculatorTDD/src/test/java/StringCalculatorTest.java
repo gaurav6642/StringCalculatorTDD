@@ -56,5 +56,32 @@ public class StringCalculatorTest {
         Assertions.assertEquals(3, result);
     }
 
+    @Test
+    @DisplayName("Negative numbers should throw an exception with all negative numbers listed")
+    public void testAddWithNegativeNumbers() {
+        Throwable exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            calculator.add("1,-2,3,-4");
+        });
+
+        String expectedMessage = "Negatives are not allowed: -2, -4";
+        String actualMessage = exception.getMessage();
+
+        Assertions.assertEquals(expectedMessage, actualMessage);
+    }
+
+    @Test
+    @DisplayName("Numbers greater than 1000 should be ignored")
+    public void testAddWithNumbersGreaterThan1000() {
+        int result = calculator.add("2,1001");
+        Assertions.assertEquals(2, result);
+    }
+
+    @Test
+    @DisplayName("Custom delimiter of any length should be supported")
+    public void testAddWithCustomDelimiterOfAnyLength() {
+        int result = calculator.add("//***\n1***2***3");
+        Assertions.assertEquals(6, result);
+    }
+
 }
 
